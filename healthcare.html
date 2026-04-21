@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Healthcare Support App</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f0f8ff;
+            padding: 20px;
+        }
+        .container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        input, textarea, select {
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+        }
+        button {
+            background-color: green;
+            color: white;
+            padding: 10px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Healthcare Support Form</h2>
+
+    <form id="healthForm">
+        <input type="text" id="name" placeholder="Enter your name" required>
+        
+        <select id="type">
+            <option value="patient">Patient</option>
+            <option value="volunteer">Volunteer</option>
+        </select>
+
+        <textarea id="message" placeholder="Enter your problem / help details"></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p id="response"></p>
+</div>
+
+<script>
+document.getElementById("healthForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("name").value;
+    let type = document.getElementById("type").value;
+
+    let responseText = "";
+
+    // Simple AI/Automation logic
+    if(type === "patient") {
+        responseText = "Hello " + name + ", our team will contact you soon. Stay safe!";
+    } else {
+        responseText = "Thank you " + name + " for volunteering! We will reach out shortly.";
+    }
+
+    document.getElementById("response").innerText = responseText;
+});
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Assistant</title>
+</head>
+<body>
+
+<h2>Healthcare AI Assistant 🤖</h2>
+
+<div id="chatbox" style="border:1px solid black; height:300px; overflow:auto; padding:10px;"></div>
+
+<input type="text" id="userInput" placeholder="Type your message">
+<button onclick="sendMessage()">Send</button>
+
+<script>
+function sendMessage() {
+    let input = document.getElementById("userInput").value;
+
+    document.getElementById("chatbox").innerHTML += "<p><b>You:</b> " + input + "</p>";
+
+    fetch("/get_response", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({message: input})
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("chatbox").innerHTML += "<p><b>Bot:</b> " + data.reply + "</p>";
+    });
+
+    document.getElementById("userInput").value = "";
+}
+</script>
+
+<br>
+<a href="/">Back to Home</a>
+
+</body>
+</html>
